@@ -20,7 +20,7 @@ export const ListItem = ({ data, index }: ListItemProps) => {
           onClick={() => console.log('ITEM', data.id)}
         >
           <div
-            className="w-full rounded-md pb-2 border border-black bg-[#f1f2f4]"
+            className="w-full rounded-md pb-2 border border-transparent bg-[#f1f2f4]"
             {...provided.dragHandleProps}
           >
             <div className="w-full text-sm px-2.5 py-1 h-7 font-medium border-transparent">
