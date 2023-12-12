@@ -60,13 +60,6 @@ export default function ListContainer({ data }: ListContainerProps) {
 
       if (!sourceList || !destList) return
 
-      if (!sourceList.cards) {
-        sourceList.cards = []
-      }
-      if (!destList.cards) {
-        destList.cards = []
-      }
-
       //Same list
       if (source.droppableId === destination.droppableId) {
         const reorderedCard = reorderData(
