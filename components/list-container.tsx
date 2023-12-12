@@ -21,15 +21,11 @@ export default function ListContainer({ data }: ListContainerProps) {
   const [orderedList, setOrderedList] = useState(data)
 
   const onDragEnd = (result: DropResult) => {
-    // console.log(result)
+    console.log(result)
     const { destination, source, type } = result
 
     if (!destination) return
-    console.log(
-      reorderData(orderedList, source.index, destination.index).map(
-        (item, index) => ({ ...item, order: index })
-      )
-    )
+
     //same position
     if (
       destination.droppableId == source.droppableId &&
@@ -40,6 +36,7 @@ export default function ListContainer({ data }: ListContainerProps) {
 
     //Move list
     if (type == 'list') {
+      //Changed order for db function if needed
       const reorderedList = reorderData(
         orderedList,
         source.index,
@@ -63,6 +60,13 @@ export default function ListContainer({ data }: ListContainerProps) {
 
       if (!sourceList || !destList) return
 
+      if (!sourceList.cards) {
+        sourceList.cards = []
+      }
+      if (!destList.cards) {
+        destList.cards = []
+      }
+
       //Same list
       if (source.droppableId === destination.droppableId) {
         const reorderedCard = reorderData(
@@ -70,10 +74,11 @@ export default function ListContainer({ data }: ListContainerProps) {
           source.index,
           destination.index
         )
-        //setup for db changes if needed
+        //setup for db order changes if needed
         reorderedCard.forEach((card, idx) => {
           card.order = idx
         })
+
         //change the cards orders in the current list
         sourceList.cards = reorderedCard
         //change state of lists
@@ -90,7 +95,7 @@ export default function ListContainer({ data }: ListContainerProps) {
         //insert into destination list
         destList.cards.splice(destination.index, 0, cardDragged)
 
-        //reorder both list
+        //reorder both list for db
         sourceList.cards.forEach((card, idx) => {
           card.order = idx
         })
@@ -109,7 +114,7 @@ export default function ListContainer({ data }: ListContainerProps) {
         {(provided) => (
           <ol
             {...provided.droppableProps}
-            className="flex gap-x-3 h-full"
+            className="flex gap-x-6 h-full"
             ref={provided.innerRef}
           >
             {orderedList.map((list, index) => (
